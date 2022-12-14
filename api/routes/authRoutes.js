@@ -6,6 +6,6 @@ const authRouter = Router()
 
 authRouter.post('/login' , loginEmployee)
 authRouter.post('/createEmployee', authorization, createEmployee)
-authRouter.get('/isLoggedIn', isLoggedIn)
+authRouter.get('/isLoggedIn', authorization, isLoggedIn)
 
 module.exports = authRouter
