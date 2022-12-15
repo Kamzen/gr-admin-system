@@ -138,7 +138,7 @@ const Employees = () => {
                     </Button>
                   </Box>
                 </TableCell>
-                <TableCell align="center">{`${employee.firstName} + ${employee.lastName}`}</TableCell>
+                <TableCell align="center">{`${employee.firstName}  ${employee.lastName}`}</TableCell>
                 <TableCell align="center">{employee.phoneNumber}</TableCell>
                 <TableCell align="center">{employee.email}</TableCell>
               </TableRow>

@@ -1,4 +1,4 @@
-const { Employee, Role } = require("../models");
+const { Employee, Role, Department } = require("../models");
 const role = require("../models/role");
 const { response } = require("../utils/Response");
 
@@ -78,6 +78,21 @@ const employeeController = {
       return res.status(200).json(
         response("Role fetched", {
           employees: employees,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  },
+
+  addDepartment: async (req, res, next) => {
+    try {
+      const department = await Department.create(req.body);
+
+      return res.status(200).json(
+        response("Depart created", {
+          department: department,
         })
       );
     } catch (err) {
