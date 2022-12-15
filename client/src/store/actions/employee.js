@@ -17,8 +17,21 @@ export const getAllRoles = () => async (dispatch) => {
     dispatch({ type: "GET_ALL_ROLES_REQUEST" });
 
     const { data } = await axiosInstance.get(`/employees/roles`);
+    dispatch(getAllEmployees())
     console.log(data);
     dispatch({ type: "GET_ALL_ROLES_SUCCESS", payload: data.roles });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getAllEmployees = () => async (dispatch) => {
+  try {
+    dispatch({ type: "GET_ALL_EMPLOYEES_REQUEST" });
+
+    const { data } = await axiosInstance.get(`/employees/getAllEmployees`);
+    console.log(data);
+    dispatch({ type: "GET_ALL_EMPLOYEES_SUCCESS", payload: data.employees });
   } catch (err) {
     console.log(err);
   }

@@ -40,6 +40,18 @@ const employee = (state = intialState, action) => {
         ...state,
         roles: action.payload,
       };
+    case "GET_ALL_EMPLOYEES_REQUEST":
+      return {
+        ...state,
+        errors: {},
+        isLoading: true,
+      };
+    case "GET_ALL_EMPLOYEES_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        employees: action.payload,
+      };
     default:
       return {
         ...state,

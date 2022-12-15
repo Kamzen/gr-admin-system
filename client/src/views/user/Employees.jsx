@@ -15,11 +15,12 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import CustomEmployeeDialog from "../../components/modals/AddEmployeeModal";
 import CustomEditEmployeeDialog from "../../components/modals/EditEmployeeModal";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllEmployees } from "../../store/actions/employee";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -66,10 +67,17 @@ const rows = [
 ];
 
 const Employees = () => {
+  const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
+  const employee = useSelector((state) => state.employee);
 
   const userInfo = auth?.userInfo;
+  const employees = employee?.employees;
+
+  useEffect(() => {
+    dispatch(getAllEmployees());
+  }, [dispatch]);
 
   return (
     <Box
