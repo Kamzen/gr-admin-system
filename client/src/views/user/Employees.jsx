@@ -22,38 +22,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllEmployees } from "../../store/actions/employee";
 
-const columns = [
-  { field: "id", headerName: "ID", width: 90 },
-  {
-    field: "firstName",
-    headerName: "First name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "lastName",
-    headerName: "Last name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-  },
-];
-
 const rows = [
   { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
   { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
@@ -141,24 +109,19 @@ const Employees = () => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Position</TableCell>
-              <TableCell align="center">Manager</TableCell>
+              <TableCell>Actions</TableCell>
+              <TableCell align="center">Full name</TableCell>
               <TableCell align="center">Phone Number</TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell align="center">Email</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows?.map((row) => (
+            {employees?.map((employee) => (
               <TableRow
-                key={row.id}
+                key={employee.id}
                 // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.id}
-                </TableCell>
-                <TableCell align="center">{row.firstName}</TableCell>
-                <TableCell align="center">{row.lastName}</TableCell>
-                <TableCell align="center">
                   <Box
                     sx={{
                       display: "flex",
@@ -169,10 +132,15 @@ const Employees = () => {
                     <CustomEditEmployeeDialog />
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <Button color="error" variant="outlined">
-                      Delete
+                      {employee.status === "active"
+                        ? "De Activate"
+                        : "Activate"}
                     </Button>
                   </Box>
                 </TableCell>
+                <TableCell align="center">{`${employee.firstName} + ${employee.lastName}`}</TableCell>
+                <TableCell align="center">{employee.phoneNumber}</TableCell>
+                <TableCell align="center">{employee.email}</TableCell>
               </TableRow>
             ))}
           </TableBody>
