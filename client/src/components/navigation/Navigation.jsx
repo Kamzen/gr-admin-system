@@ -20,7 +20,7 @@ import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import { Link, Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { isLoggedIn } from "../../store/actions/auth";
-import { getAllManagers } from "../../store/actions/employee";
+import { getAllDepartments, getAllManagers } from "../../store/actions/employee";
 
 const drawerWidth = 240;
 
@@ -66,6 +66,7 @@ export default function Navigation() {
   React.useEffect(() => {
     dispatch(isLoggedIn());
     dispatch(getAllManagers());
+    dispatch(getAllDepartments());
   }, [dispatch]);
 
   return (

@@ -61,16 +61,29 @@ export default function CustomEmployeeDialog() {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
 
+  const statuses = [
+    {
+      value: "active",
+      label: "Active",
+    },
+    {
+      value: "inactive",
+      label: "In Active",
+    },
+  ];
+
   const auth = useSelector((state) => state.auth);
   const employee = useSelector((state) => state.employee);
 
   const userInfo = auth?.userInfo;
   const roles = employee?.roles;
   const managers = employee?.managers;
+  const departments = employee?.departments;
   const { errors, message } = auth;
 
   const managersList = [];
   const rolesList = [];
+  const departmentsList = [];
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -90,6 +103,13 @@ export default function CustomEmployeeDialog() {
     rolesList.push({
       value: role.id,
       label: role.roleType,
+    });
+  });
+
+  departments?.map((department) => {
+    departmentsList.push({
+      value: department.id,
+      label: department.name,
     });
   });
 
@@ -128,6 +148,7 @@ export default function CustomEmployeeDialog() {
               managerId: "",
               username: "",
               roleId: "",
+              status: "",
             }}
             validationSchema={yup.object().shape({
               firstName: yup.string().required("Fisrtname is required"),
@@ -147,12 +168,14 @@ export default function CustomEmployeeDialog() {
               managerId: yup.string().required("Manager is required"),
               username: yup.string().required("Username is required"),
               roleId: yup.string().required("Role is required"),
+              status: yup.string().required("Status is required"),
             })}
             onSubmit={(values) => {
               dispatch(createEmployee(values));
             }}
           >
             {({ values, errors }) => {
+              console.log(errors)
               return (
                 <Form>
                   <Grid container spacing={2}>
@@ -209,6 +232,16 @@ export default function CustomEmployeeDialog() {
                         name="roleId"
                         label="Role"
                         options={rolesList.length > 0 && rolesList}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography>*Status:</Typography>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <SelectWrapper
+                        name="status"
+                        label="Status"
+                        options={statuses}
                       />
                     </Grid>
                   </Grid>

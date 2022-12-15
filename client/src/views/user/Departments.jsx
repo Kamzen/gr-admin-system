@@ -44,7 +44,7 @@ const Departments = () => {
   const departments = employee?.departments;
 
   useEffect(() => {
-    dispatch(getAllDepartments());
+    
   }, [dispatch]);
 
   return (

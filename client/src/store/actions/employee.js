@@ -44,6 +44,7 @@ export const addDepartment = (formData) => async (dispatch) => {
       `/employees/addDepartment`,
       formData
     );
+    dispatch(getAllDepartments())
     console.log(data);
     dispatch({ type: "ADD_NEW_DEPARTMENT_SUCCESS" });
   } catch (err) {

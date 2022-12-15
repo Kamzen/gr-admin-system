@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
-const { Employee, Role } = require("../models");
+const { Employee, Role, EmployeeDepartment, Department } = require("../models");
 const { HTTP_STATUS_CODES } = require("../utils/constants");
 const { ApiError, response } = require("../utils/Response");
 const jwt = require("jsonwebtoken");
@@ -65,6 +65,7 @@ exports.loginEmployee = async (req, res, next) => {
 
 exports.createEmployee = async (req, res, next) => {
   try {
+    // an transaction is needed for all request below
     const { username } = req.body;
     const isEmailTaken = await Employee.findOne({
       where: { [Op.or]: [{ username: username }, { email: username }] },
@@ -78,8 +79,14 @@ exports.createEmployee = async (req, res, next) => {
         )
       );
     }
-
+    const department = await Department.findOne({
+      where: { managerId: req.body.managerId },
+    });
     const employee = await Employee.create(req.body);
+    const employeeDepartment = await EmployeeDepartment.create({
+      employeeId: employee.id,
+      departmnetId: department.id,
+    });
 
     return res.status(201).json(
       response("Employee created successfully", {
