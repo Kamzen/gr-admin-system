@@ -66,6 +66,25 @@ const employeeController = {
       next(err);
     }
   },
+
+  getAllEmployees: async (req, res, next) => {
+    try {
+      const employees = await Employee.findAll({
+        include: {
+          model: Role,
+        },
+      });
+
+      return res.status(200).json(
+        response("Role fetched", {
+          employees: employees,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  },
 };
 
 module.exports = employeeController;
