@@ -52,6 +52,43 @@ const employee = (state = intialState, action) => {
         isLoading: false,
         employees: action.payload,
       };
+    case "ADD_NEW_DEPARTMENT_REQUEST":
+      return {
+        ...state,
+        errors: {},
+        message: null,
+      };
+    case "ADD_NEW_DEPARTMENT_SUCCESS":
+      return {
+        ...state,
+        errors: {
+          addDepartmentError: false,
+        },
+        message: "Department added",
+      };
+    case "ADD_NEW_DEPARTMENT_FAIL":
+      return {
+        ...state,
+        errors: {
+          addDepartmentError: true,
+        },
+        message: action.payload,
+      };
+    case "GET_ALL_DEPARTMENT_REQUEST":
+      return {
+        ...state,
+        errors: {},
+        message: null,
+      };
+    case "GET_ALL_DEPARTMENT_SUCCESS":
+      return {
+        ...state,
+        errors: {
+          getDepartmentError: false,
+        },
+        message: "Department fetched",
+        departments: action.payload,
+      };
     default:
       return {
         ...state,

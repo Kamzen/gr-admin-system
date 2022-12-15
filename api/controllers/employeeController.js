@@ -100,6 +100,26 @@ const employeeController = {
       next(err);
     }
   },
+
+  getAllDepartments: async (req, res, next) => {
+    try {
+      const departments = await Department.findAll({
+        include: {
+          model: Employee,
+          attributes: ["firstName", "lastName", "id"],
+        },
+      });
+
+      return res.status(200).json(
+        response("Departments fetched", {
+          departments: departments,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  },
 };
 
 module.exports = employeeController;

@@ -35,3 +35,30 @@ export const getAllEmployees = () => async (dispatch) => {
     console.log(err);
   }
 };
+
+export const addDepartment = (formData) => async (dispatch) => {
+  try {
+    dispatch({ type: "ADD_NEW_DEPARTMENT_REQUEST" });
+
+    const { data } = await axiosInstance.post(
+      `/employees/addDepartment`,
+      formData
+    );
+    console.log(data);
+    dispatch({ type: "ADD_NEW_DEPARTMENT_SUCCESS" });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getAllDepartments = () => async (dispatch) => {
+  try {
+    dispatch({ type: "GET_ALL_DEPARTMENT_REQUEST" });
+
+    const { data } = await axiosInstance.get(`/employees/getAllDepartments`);
+    console.log(data);
+    dispatch({ type: "GET_ALL_DEPARTMENT_SUCCESS", payload: data.departments });
+  } catch (err) {
+    console.log(err);
+  }
+};

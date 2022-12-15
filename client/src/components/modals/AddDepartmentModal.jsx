@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SelectWrapper from "../commonUI/Select";
 import { createEmployee } from "../../store/actions/auth";
 import AlertPopup from "../commonUI/AlertPopup";
-import { getAllRoles } from "../../store/actions/employee";
+import { addDepartment, getAllRoles } from "../../store/actions/employee";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -132,12 +132,8 @@ export default function AddDepartmentModal() {
         <DialogContent dividers>
           <Formik
             initialValues={{
-              firstName: "",
-              lastName: "",
-              phoneNumber: "",
-              email: "",
               managerId: "",
-              username: "",
+              name: "",
               roleId: "",
             }}
             validationSchema={yup.object().shape({
@@ -146,7 +142,7 @@ export default function AddDepartmentModal() {
               managerId: yup.string().required("Manager is required"),
             })}
             onSubmit={(values) => {
-              dispatch(createEmployee(values));
+              dispatch(addDepartment(values));
             }}
           >
             {({ values, errors }) => {

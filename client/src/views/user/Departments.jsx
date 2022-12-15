@@ -19,7 +19,7 @@ import React, { useEffect } from "react";
 import CustomEditEmployeeDialog from "../../components/modals/EditEmployeeModal";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllEmployees } from "../../store/actions/employee";
+import { getAllDepartments, getAllEmployees } from "../../store/actions/employee";
 import AddDepartmentModal from "../../components/modals/AddDepartmentModal";
 
 const rows = [
@@ -41,10 +41,10 @@ const Departments = () => {
   const employee = useSelector((state) => state.employee);
 
   const userInfo = auth?.userInfo;
-  const employees = employee?.employees;
+  const departments = employee?.departments;
 
   useEffect(() => {
-    dispatch(getAllEmployees());
+    dispatch(getAllDepartments());
   }, [dispatch]);
 
   return (
@@ -110,15 +110,15 @@ const Departments = () => {
           <TableHead>
             <TableRow>
               <TableCell>Actions</TableCell>
-              <TableCell align="center">Full name</TableCell>
-              <TableCell align="center">Phone Number</TableCell>
-              <TableCell align="center">Email</TableCell>
+              <TableCell align="center">Department Name</TableCell>
+              <TableCell align="center">Manager</TableCell>
+              <TableCell align="center">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {employees?.map((employee) => (
+            {departments?.map((department) => (
               <TableRow
-                key={employee.id}
+                key={department.id}
                 // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
@@ -132,15 +132,15 @@ const Departments = () => {
                     <CustomEditEmployeeDialog />
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <Button color="error" variant="outlined">
-                      {employee.status === "active"
+                      {department.status === "active"
                         ? "De Activate"
                         : "Activate"}
                     </Button>
                   </Box>
                 </TableCell>
-                <TableCell align="center">{`${employee.firstName} + ${employee.lastName}`}</TableCell>
-                <TableCell align="center">{employee.phoneNumber}</TableCell>
-                <TableCell align="center">{employee.email}</TableCell>
+                <TableCell align="center">{department.name}</TableCell>
+                <TableCell align="center">{department.Employee.firstName}</TableCell>
+                <TableCell align="center">{department.status}</TableCell>
               </TableRow>
             ))}
           </TableBody>
