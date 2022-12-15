@@ -7,6 +7,8 @@ exports.authorization = (req, res, next) => {
     // get header
     const header = req.header("authorization");
 
+    // console.log(header)
+
     if (!header)
       return next(
         new ApiError(
@@ -24,9 +26,11 @@ exports.authorization = (req, res, next) => {
         )
       );
 
-    const token = header.split("")[1];
+    const token = header.split(" ")[1];
 
-    const user = jwt.verify(token, `${process.env.ACCESS_SECRET_TOKEN}`);
+    console.log(token);
+
+    const user = jwt.verify(token, `${process.env.ACCESS_SECRET_TOKEN}` + "");
 
     if (!user) {
       return next(
@@ -37,7 +41,7 @@ exports.authorization = (req, res, next) => {
       );
     }
 
-    req.user = user;
+    req.user = { ...user, token: token };
     next();
   } catch (err) {
     console.log(err);

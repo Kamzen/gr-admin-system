@@ -19,6 +19,7 @@ import React from "react";
 import CustomEmployeeDialog from "../../components/modals/AddEmployeeModal";
 import CustomEditEmployeeDialog from "../../components/modals/EditEmployeeModal";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useSelector } from "react-redux";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
@@ -65,6 +66,11 @@ const rows = [
 ];
 
 const Employees = () => {
+
+  const auth = useSelector((state) => state.auth);
+
+  const userInfo = auth?.userInfo;
+
   return (
     <Box
       component="div"

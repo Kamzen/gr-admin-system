@@ -32,10 +32,33 @@ const auth = (state = intialState, action) => {
         },
         message: action.payload,
       };
-      case "IS_LOGGEDIN_SUCCESS":
+    case "IS_LOGGEDIN_SUCCESS":
       return {
         ...state,
         userInfo: action.payload,
+      };
+    case "CREATE_EMPLOYEE_REQUEST":
+      return {
+        ...state,
+        error: {},
+        isLoading: true,
+        message: null,
+      };
+    case "CREATE_EMPLOYEE_SUCCESS":
+      return {
+        ...state,
+        error: {
+          createEmployeeError: false,
+        },
+        message: "Employee created successfully",
+      };
+    case "CREATE_EMPLOYEE_FAIL":
+      return {
+        ...state,
+        error: {
+          createEmployeeError: true,
+        },
+        message: action.payload,
       };
     default:
       return {

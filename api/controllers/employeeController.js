@@ -1,4 +1,6 @@
-const { Employee } = require("../models");
+const { Employee, Role } = require("../models");
+const role = require("../models/role");
+const { response } = require("../utils/Response");
 
 const employeeController = {
   editEmployee: async (req, res, next) => {
@@ -21,6 +23,42 @@ const employeeController = {
       return res.status(200).json(
         response("Employee updated successfully", {
           employee: { ...payload, employee: update },
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  },
+
+  getAllManagers: async (req, res, next) => {
+    try {
+      const managers = await Employee.findAll({
+        include: {
+          model: Role,
+          where: {
+            roleType: "manager",
+          },
+        },
+      });
+      return res.status(200).json(
+        response("Employee updated successfully", {
+          managers: managers,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  },
+
+  getAllRoles: async (req, res, next) => {
+    try {
+      const roles = await Role.findAll();
+
+      return res.status(200).json(
+        response("Role fetched", {
+          roles: roles,
         })
       );
     } catch (err) {

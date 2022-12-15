@@ -7,19 +7,19 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Role, Department, EmployeeDepartment}) {
+    static associate({ Role, Department, EmployeeDepartment }) {
       // define association here
       this.belongsTo(Role, {
-        foreignKey: 'roleId'
-      })
+        foreignKey: "roleId",
+      });
 
       this.hasMany(EmployeeDepartment, {
-        foreignKey: 'emplyeeId'
-      })
+        foreignKey: "emplyeeId",
+      });
 
       this.hasOne(Department, {
-        foreignKey: 'managerId'
-      })
+        foreignKey: "managerId",
+      });
     }
   }
   Employee.init(
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        defaultValue: DataTypes.UUIDV4,
       },
       firstName: {
         type: DataTypes.TEXT,
@@ -52,12 +52,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        defaultValue: "Password123#",
       },
       status: {
         type: DataTypes.TEXT,
         allowNull: false,
-        defaultValue: 'active'
+        defaultValue: "active",
       },
       roleId: {
         allowNull: false,

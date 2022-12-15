@@ -47,13 +47,14 @@ exports.loginEmployee = async (req, res, next) => {
       lastName: employee.lastName,
       phoneNumber: employee.phoneNumber,
       status: employee.status,
+      roleType: employee.Role.roleType,
     };
 
     token = jwt.sign(payload, process.env.ACCESS_SECRET_TOKEN);
 
     return res.status(200).json(
       response("Employee logged in successfully", {
-        employee: { ...payload, roleTye: employee.Role.roleType, token: token },
+        employee: { ...payload, token: token },
       })
     );
   } catch (err) {
@@ -62,9 +63,23 @@ exports.loginEmployee = async (req, res, next) => {
   }
 };
 
-exports.createEmployee = (req, res, next) => {
+exports.createEmployee = async (req, res, next) => {
   try {
-    const employee = await.create(req.body);
+    const { username } = req.body;
+    const isEmailTaken = await Employee.findOne({
+      where: { [Op.or]: [{ username: username }, { email: username }] },
+    });
+
+    if (isEmailTaken) {
+      return next(
+        new ApiError(
+          "Email/Username already exist",
+          HTTP_STATUS_CODES.UNAUTHORIZED
+        )
+      );
+    }
+
+    const employee = await Employee.create(req.body);
 
     return res.status(201).json(
       response("Employee created successfully", {
@@ -77,11 +92,17 @@ exports.createEmployee = (req, res, next) => {
   }
 };
 
-exports.isLoggedIn = async () => {
+exports.isLoggedIn = async (req, res, next) => {
   try {
-    return res
-      .status(200)
-      .json(response("User logged in", { employee: { ...req.user } }));
+    const employee = await Employee.findOne({
+      where: { id: req.user.id },
+    });
+
+    return res.status(200).json(
+      response("Employee is logged in", {
+        employee: { ...req.user },
+      })
+    );
   } catch (err) {
     next(err);
   }

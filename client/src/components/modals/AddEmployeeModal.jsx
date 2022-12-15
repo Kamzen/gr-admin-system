@@ -13,6 +13,11 @@ import { Form, Formik } from "formik";
 import TextfieldWrapper from "../commonUI/TextfieldWrapper";
 import { Grid } from "@mui/material";
 import * as yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import SelectWrapper from "../commonUI/Select";
+import { createEmployee } from "../../store/actions/auth";
+import AlertPopup from "../commonUI/AlertPopup";
+import { getAllRoles } from "../../store/actions/employee";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -54,6 +59,18 @@ AddEmployeeModal.propTypes = {
 
 export default function CustomEmployeeDialog() {
   const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+
+  const auth = useSelector((state) => state.auth);
+  const employee = useSelector((state) => state.employee);
+
+  const userInfo = auth?.userInfo;
+  const roles = employee?.roles;
+  const managers = employee?.managers;
+  const { errors, message } = auth;
+
+  const managersList = [];
+  const rolesList = [];
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -62,13 +79,37 @@ export default function CustomEmployeeDialog() {
     setOpen(false);
   };
 
+  managers?.map((manager) => {
+    managersList.push({
+      value: manager.id,
+      label: manager.firstName,
+    });
+  });
+
+  roles?.map((role) => {
+    rolesList.push({
+      value: role.id,
+      label: role.roleType,
+    });
+  });
+
+  React.useEffect(() => {
+    dispatch(getAllRoles());
+  }, [dispatch]);
+
   return (
     <div>
-      <Box textAlign={"center"}>
-        <Button variant="contained" onClick={handleClickOpen}>
-          Add Employee
-        </Button>
-      </Box>
+      {userInfo?.roleType === "hr-admin" && (
+        <Box textAlign={"center"}>
+          <Button variant="contained" onClick={handleClickOpen}>
+            Add Employee
+          </Button>
+        </Box>
+      )}
+
+      {errors?.createEmployeeError === false && (
+        <AlertPopup open={true} message={message} />
+      )}
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -85,6 +126,8 @@ export default function CustomEmployeeDialog() {
               phoneNumber: "",
               email: "",
               managerId: "",
+              username: "",
+              roleId: "",
             }}
             validationSchema={yup.object().shape({
               firstName: yup.string().required("Fisrtname is required"),
@@ -97,7 +140,17 @@ export default function CustomEmployeeDialog() {
                 .min(10, "Phone number should be 10 digits")
                 .max(10, "Phone number should be 10 digits")
                 .required("Phone number is required"),
+              email: yup
+                .string()
+                .email("Invalid email")
+                .required("Email is required"),
+              managerId: yup.string().required("Manager is required"),
+              username: yup.string().required("Username is required"),
+              roleId: yup.string().required("Role is required"),
             })}
+            onSubmit={(values) => {
+              dispatch(createEmployee(values));
+            }}
           >
             {({ values, errors }) => {
               return (
@@ -115,6 +168,13 @@ export default function CustomEmployeeDialog() {
                     <Grid item xs={8}>
                       <TextfieldWrapper name="lastName" label="Lastname" />
                     </Grid>
+                    <Grid item xs={4}>
+                      <Typography>*Username:</Typography>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <TextfieldWrapper name="username" label="Username" />
+                    </Grid>
+
                     <Grid item xs={4}>
                       <Typography>*Telephone Number:</Typography>
                     </Grid>
@@ -135,7 +195,21 @@ export default function CustomEmployeeDialog() {
                       <Typography>*Manager:</Typography>
                     </Grid>
                     <Grid item xs={8}>
-                      <TextfieldWrapper name="managerId" label="Manager" />
+                      <SelectWrapper
+                        name="managerId"
+                        label="Manager"
+                        options={managersList.length > 0 && managersList}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography>*Roles:</Typography>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <SelectWrapper
+                        name="roleId"
+                        label="Role"
+                        options={rolesList.length > 0 && rolesList}
+                      />
                     </Grid>
                   </Grid>
                   <br />

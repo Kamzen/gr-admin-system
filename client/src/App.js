@@ -1,12 +1,19 @@
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const App = () => {
   const navigate = useNavigate();
 
+  const auth = useSelector((state) => state.auth);
 
+  const userInfo = auth?.userInfo;
+
+  if (userInfo) {
+    return <Navigate to={"/employees"} />;
+  }
 
   return (
     <Box

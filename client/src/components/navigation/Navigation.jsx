@@ -17,7 +17,10 @@ import ListItemText from "@mui/material/ListItemText";
 import AppMainContainer from "../AppMainContainer";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
-import {Outlet} from 'react-router-dom'
+import { Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { isLoggedIn } from "../../store/actions/auth";
+import { getAllManagers } from "../../store/actions/employee";
 
 const drawerWidth = 240;
 
@@ -50,6 +53,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export default function Navigation() {
   const [open, setOpen] = React.useState(false);
 
+  const dispatch = useDispatch();
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -57,6 +62,11 @@ export default function Navigation() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  React.useEffect(() => {
+    dispatch(isLoggedIn());
+    dispatch(getAllManagers());
+  }, [dispatch]);
 
   return (
     <Box sx={{ display: "flex" }}>
