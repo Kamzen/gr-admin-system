@@ -82,6 +82,8 @@ exports.createEmployee = async (req, res, next) => {
     const department = await Department.findOne({
       where: { managerId: req.body.managerId },
     });
+
+    console.log(department)
     const employee = await Employee.create(req.body);
     const employeeDepartment = await EmployeeDepartment.create({
       employeeId: employee.id,
