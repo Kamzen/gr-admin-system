@@ -1,5 +1,6 @@
 import axios from "axios";
 import axiosInstance from "../../xhr";
+import { getAllEmployees } from "./employee";
 
 const BASE_API_URL = `http://localhost:5000/api/dev`;
 
@@ -45,6 +46,7 @@ export const createEmployee = (formData) => async (dispatch) => {
     console.log(data);
 
     dispatch({ type: "CREATE_EMPLOYEE_SUCCESS" });
+    dispatch(getAllEmployees())
 
     console.log(data);
   } catch (err) {

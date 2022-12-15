@@ -17,7 +17,6 @@ export const getAllRoles = () => async (dispatch) => {
     dispatch({ type: "GET_ALL_ROLES_REQUEST" });
 
     const { data } = await axiosInstance.get(`/employees/roles`);
-    dispatch(getAllEmployees())
     console.log(data);
     dispatch({ type: "GET_ALL_ROLES_SUCCESS", payload: data.roles });
   } catch (err) {

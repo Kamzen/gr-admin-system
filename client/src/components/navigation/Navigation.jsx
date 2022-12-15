@@ -17,7 +17,7 @@ import ListItemText from "@mui/material/ListItemText";
 import AppMainContainer from "../AppMainContainer";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { isLoggedIn } from "../../store/actions/auth";
 import { getAllManagers } from "../../store/actions/employee";
@@ -111,7 +111,9 @@ export default function Navigation() {
               <ListItemIcon>
                 <GroupAddIcon />
               </ListItemIcon>
-              <ListItemText primary={"Employees"} />
+              <Link to={"/employees"}>
+                <ListItemText primary={"Employees"} />
+              </Link>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -119,7 +121,9 @@ export default function Navigation() {
               <ListItemIcon>
                 <DashboardCustomizeIcon />
               </ListItemIcon>
-              <ListItemText primary={"Departments"} />
+              <Link to={"departments"}>
+                <ListItemText primary={"Departments"} />
+              </Link>
             </ListItemButton>
           </ListItem>
         </List>
